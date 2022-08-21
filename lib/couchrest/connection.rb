@@ -124,17 +124,18 @@ module CouchRest
       end
 
       # SSL Certificate option mapping
-      if opts.include?(:verify_ssl)
-        conn.ssl_config.verify_mode = opts[:verify_ssl] ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
-      end
+      # if opts.include?(:verify_ssl)
+      #   conn.ssl_config.verify_mode = opts[:verify_ssl] ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
+      # end
+      conn.ssl_config.verify_mode = OpenSSL::SSL::VERIFY_NONE
       conn.ssl_config.client_cert = opts[:ssl_client_cert] if opts.include?(:ssl_client_cert)
       conn.ssl_config.client_key  = opts[:ssl_client_key]  if opts.include?(:ssl_client_key)
       conn.ssl_config.set_trust_ca(opts[:ssl_ca_file]) if opts.include?(:ssl_ca_file)
 
       # Timeout options
-      conn.receive_timeout = opts[:timeout] if opts.include?(:timeout)
-      conn.connect_timeout = opts[:open_timeout] if opts.include?(:open_timeout)
-      conn.send_timeout    = opts[:read_timeout] if opts.include?(:read_timeout)
+      conn.receive_timeout = 10000 # opts[:timeout] if opts.include?(:timeout)
+      conn.connect_timeout = 10000 # opts[:open_timeout] if opts.include?(:open_timeout)
+      conn.send_timeout    = 10000 # opts[:read_timeout] if opts.include?(:read_timeout)
     end
 
     def execute(method, path, options, payload = nil, &block)
